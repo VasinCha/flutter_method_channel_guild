@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(const MyApp());
@@ -55,6 +56,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  static const channel = MethodChannel('native_module');
+  var responseText = 'You have pushed the button this many times:';
   int _counter = 0;
 
   void _incrementCounter() {
@@ -65,6 +68,41 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       _counter++;
+    });
+  }
+
+  
+
+  void openNative() async {
+    try {
+      var result = await channel.invokeMethod('openNativeView',{'flutterParam':'Hello Native From Flutter'});
+      print("Result from native view: $result");
+    } catch (e){
+      print('Something went wrong: $e'); 
+    }
+     
+  }
+
+   @override
+  void initState()  {
+     setupMethodChannelHandler();
+  }
+
+  void setupMethodChannelHandler(){
+    channel.setMethodCallHandler((call) async {
+      switch (call.method) {
+        case 'nativeResponse': // Replace with your method name
+          final args = call.arguments; // Arguments from native
+          print('Received args from native: $args');
+          setState(() {
+            responseText = '$args';
+          });
+          
+          // Handle the call and return any response if needed
+          return 'Response from Flutter';
+        default:
+          throw MissingPluginException('Method ${call.method} not implemented');
+      }
     });
   }
 
@@ -90,23 +128,14 @@ class _MyHomePageState extends State<MyHomePage> {
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
+          
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+            ElevatedButton(onPressed: (){
+              openNative();
+            }, child: Text('Open Native View')),
+             Text(
+              responseText,
             ),
             Text(
               '$_counter',
