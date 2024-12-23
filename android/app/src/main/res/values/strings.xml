@@ -1,4 +1,6 @@
 <resources>
-    <string name="app_name">test-fcm-push-notification</string>
-    <string name="default_notification_channel_id">default-notification-channel-id</string>
+    <string name="app_name">SwitchNative</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>

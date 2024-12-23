@@ -16,7 +16,7 @@ class MainActivity: FlutterActivity() {
         // This method is invoked on the main thread.
         if (call.method == "native_screen") {
             println("call method")
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
         } else {
             println("EKYC not call method")
