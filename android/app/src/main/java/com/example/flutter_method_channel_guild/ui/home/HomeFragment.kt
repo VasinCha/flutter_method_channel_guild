@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.flutter_method_channel_guild.MainActivity.Companion.flutterParam
 import com.example.flutter_method_channel_guild.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -30,7 +31,7 @@ class HomeFragment : Fragment() {
 
         val textView: TextView = binding.textHome
         homeViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+            textView.text = flutterParam
         }
         return root
     }
